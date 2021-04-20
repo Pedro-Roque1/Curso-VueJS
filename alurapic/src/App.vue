@@ -14,20 +14,15 @@ export default {
   data() {
     return {
       titulo: "AluraPic",
-      fotos: [
-        {
-          url:
-            "https://www.petz.com.br/blog/wp-content/uploads/2021/03/piercing-para-cachorro-2.jpg",
-          titulo: "cachorro",
-        },
-        {
-          url:
-            "https://www.petz.com.br/blog/wp-content/uploads/2021/03/piercing-para-cachorro-2.jpg",
-          titulo: "cão",
-        },
-      ],
-    };
+      fotos: []
+    }
   },
+  created() { // função chamada assim que o objeto for criado => lifecyclehooks
+    let promisse = this.$http.get('http://localhost:3000/v1/fotos');//promessa de que vai buscar no determinado server
+    promisse
+      .then(resposta => resposta.json()) // para obter o resultado de uma prommisse uso o then()
+      .then(fotos=> this.fotos = fotos, err => console.log(err + "não achei o endereço")); // o retorno da função acima vai ser armazenado no objeto fotos
+  }
 }
 </script>
 
