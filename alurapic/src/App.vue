@@ -3,11 +3,13 @@
 <template>
   <div class="corpo">
     <h1 class="centralizado">{{ titulo }}</h1>
+    <input type="search" class="filtro" v-on:input="filtro=$event.target.value" placeholder="filtre por título">
+    {{ filtro }}
     <ul class="lista-fotos">
-      <li class="lista-fotos-item" v-for="foto in fotos">
+      <li class="lista-fotos-item" v-for="foto in fotosComFiltro">
 
             <meu-painel v-bind:titulo="foto.titulo">
-              <img  class="imagem-responsiva" v-bind:src="foto.url" v-bind:alt="foto.titulo" />
+              <imagem-responsiva v-bind:url="foto.url" v-bind:titulo="foto.titulo"/>
             </meu-painel>
         
       </li>
@@ -18,14 +20,29 @@
 
 <script>
 import Painel from './components/shared/painel/Painel.vue';
+import ImagemResponsiva from './components/shared/imagem-responsiva/ImagemResponsiva.vue';
 export default {
   components:{
-    'meu-painel':Painel
+    'meu-painel':Painel,
+    'imagem-responsiva':ImagemResponsiva
   },
   data() {
     return {
       titulo: "AluraPic",
-      fotos: []
+      fotos: [],
+      filtro: '' 
+    }
+  },
+
+  computed:{
+    fotosComFiltro() {
+      if(this.filtro) {
+        /*filtrar*/
+        let exp = new RegExp(this.filtro.trim(), 'i');
+        return this.fotos.filter(foto=>exp.test(foto.titulo));
+      } else {
+        return this.fotos;
+      }
     }
   },
   created() { // função chamada assim que o objeto for criado => lifecyclehooks
@@ -56,9 +73,10 @@ export default {
   .lista-fotos .lista-fotos-item {
     display: inline-block;
   }
-  .imagem-responsiva{
-
+  .filtro{
     width: 100%;
+	  height: 35px;
+	  margin-bottom: 10px;
   }
 
 </style>
