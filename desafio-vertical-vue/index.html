@@ -22,8 +22,12 @@
     </nav>
 
     <div class="list-group" id="listagem">
-      <a v-for="post in lista" class="list-group-item" :href="'?id=' + post.id">
-        {{ post.id }} - {{ post.title }}
+      <a
+        v-for="post in lista"
+        class="list-group-item"
+        :href="'descricao.html?id=' + post.id"
+      >
+        <h6>{{ post.id }} - {{ post.title }}</h6>
       </a>
     </div>
 
