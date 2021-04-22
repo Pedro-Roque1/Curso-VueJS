@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/animate.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">API POSTS 2.0</a>
+      </div>
+      <form class="form-inline my-2 my-lg-0">
+        <a
+          href="cadastro-post.html"
+          class="btn btn-outline-success my-2 my-sm-0"
+          >Novo Post</a
+        >
+      </form>
+    </nav>
+
+    <div class="list-group" id="listagem">
+      <a v-for="post in lista" class="list-group-item" :href="'?id=' + post.id">
+        {{ post.id }} - {{ post.title }}
+      </a>
+    </div>
+
+    <script>
+      var listaPosts = new Vue({
+        el: "#listagem",
+        data() {
+          return {
+            lista: [],
+          };
+        },
+        created() {
+          var self = this;
+
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", "http://jsonplaceholder.typicode.com/posts");
+          xhr.addEventListener("load", function () {
+            var resposta = xhr.responseText;
+            self.lista = JSON.parse(resposta).slice(0, 10);
+          });
+          xhr.send();
+        },
+      });
+    </script>
+  </body>
+</html>
